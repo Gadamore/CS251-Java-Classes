@@ -1,0 +1,117 @@
+package hwk2;
+
+
+
+//import static org.junit.Assert.assertTrue;
+
+import java.util.Scanner;
+
+//import org.junit.Test;
+
+public class hwk2{
+	public static void main(String []args){
+		Scanner stdIn = new Scanner(System.in);
+		System.out.println (parse( promptAndRead(stdIn) ));
+	}
+
+	private static String promptAndRead(Scanner stdIn) {
+		String code="";
+		do {
+			System.out.println("Please enter a Java if-then-else statement in one line:");
+			code = stdIn.nextLine();
+		} while (code.length()== 0);
+
+		return code;
+	}
+	
+	private static String parse(String code) {
+		// TODO
+		String tempCode = "";
+		String nextLine = "\n";
+		String tabLine = "\t";
+		String space = " ";
+		
+		int count = 0;
+		int startFrom = 0;
+		int bracket = code.indexOf('{', startFrom) + 1;
+		int backBracket = code.indexOf('}', startFrom);
+		int par = code.indexOf('(', startFrom);
+		int backPar = code.indexOf(')', startFrom) ;
+		int r = code.indexOf('r', startFrom);
+		
+		// loop this part of the function until code.length() is equal to backBracket
+		// where the last back bracket has been found, assuming that will always
+		// indicate that the if then else statements had ended
+		
+		//tempCode = code.substring(startFrom , bracket) + nextLine + tabLine;//if (true) {\n\t
+		
+		
+		do{
+			
+			tempCode = tempCode+ code.substring(startFrom , bracket) + nextLine + tabLine;//if (true) {\n\t
+			
+			tempCode.trim();
+			
+			startFrom = bracket;
+			bracket = code.indexOf('{', startFrom) + 1;
+			backBracket = code.indexOf('}', startFrom);
+			
+			code.trim();
+			
+			tempCode = tempCode + code.substring(startFrom,  backBracket) + nextLine;//return 1;\n
+			tempCode = tempCode + code.substring(backBracket, backBracket + 1) + nextLine;//}\n
+			
+			startFrom = backBracket + 2		;// 23 
+			bracket = code.indexOf('{', startFrom) + 1;
+			backBracket = code.indexOf('}', startFrom);
+			
+			count++;
+		}while(count <= 0);
+
+		code = tempCode.trim();
+		
+		return code;
+	} 
+	
+	/*@Test
+	public void test1() {
+		String input = "if (true) { return 1; } else { return 0; }";
+		String output = "if (true) {\n\treturn 1;\n}\nelse {\n\treturn 0;\n}"; 
+		assertTrue(parse(input).equals(output));
+	}
+	
+	@Test
+	public void test2() {
+		String input = "if (true) { return 1; }";
+		String output = "if (true) {\n\treturn 1;\n}"; 
+		assertTrue(parse(input).equals(output));
+	}
+	
+	@Test
+	public void test3() {
+		String input = "if(true){return 1;}else{return 0;}";
+		String output = "if (true) {\n\treturn 1;\n}\nelse {\n\treturn 0;\n}"; 
+		assertTrue(parse(input).equals(output));
+	}
+	
+	@Test
+	public void test4() {
+		String input = "if(true){return 1;}";
+		String output = "if (true) {\n\treturn 1;\n}"; 
+		assertTrue(parse(input).equals(output));
+	}
+	
+	@Test
+	public void test5() {
+		String input = "if   (true) {   return 1;     } else { return 0; }";
+		String output = "if (true) {\n\treturn 1;\n}\nelse {\n\treturn 0;\n}"; 
+		assertTrue(parse(input).equals(output));
+	}
+	
+	@Test
+	public void test6() {
+		String input = "if   (true)   {   return 1;    }";
+		String output = "if (true) {\n\treturn 1;\n}"; 
+		assertTrue(parse(input).equals(output));
+	}*/
+}
